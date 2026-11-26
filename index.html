@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelLog - Your Travel Management Hub</title>
+    <meta name="description" content="Document, track, and share your travel adventures with TravelLog">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Floating Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="header-brand">
+                <div>
+                    <h1>TravelLog</h1>
+                    <p class="header-tagline">Document, Track, Share Your Adventures</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="profile">
+                    <div class="profile-icon" id="profileIcon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <a href="#" id="profileLink"><i class="fas fa-user-circle"></i> Profile</a>
+                        <a href="#" id="settingsLink"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#" id="logoutLink"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#" data-section="home" class="nav-link active"><i class="fas fa-home"></i> Feed</a></li>
+            <li><a href="#" data-section="my-trips" class="nav-link"><i class="fas fa-suitcase"></i> My Trips</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home/Feed Section -->
+        <section id="home" class="active">
+            <div class="feed-header">
+                <h2>Travel Feed</h2>
+                <p>Explore your amazing journeys and adventures</p>
+            </div>
+            <div class="feed-container" id="feedContainer">
+                <!-- Feed cards will be inserted here -->
+                <div class="feed-empty" id="feedEmpty">
+                    <i class="fas fa-globe-americas"></i>
+                    <h3>No trips yet!</h3>
+                    <p>Start documenting your adventures by clicking the + button below</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Trips Section -->
+        <section id="my-trips">
+            <div class="feed-header">
+                <h2>My Trips</h2>
+                <p>All your documented adventures</p>
+            </div>
+            <div class="feed-container" id="myTripsContainer">
+                <!-- User's trips will be displayed here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating Action Button -->
+    <button class="fab" id="fabBtn" title="Create New Trip">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- Create Trip Modal -->
+    <div class="modal" id="createTripModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create New Trip</h2>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Modal Tabs -->
+            <div class="modal-tabs">
+                <button class="modal-tab active" data-tab="planner">
+                    <i class="fas fa-map-marked-alt"></i> Trip Planner
+                </button>
+                <button class="modal-tab" data-tab="expenses">
+                    <i class="fas fa-dollar-sign"></i> Expenses
+                </button>
+                <button class="modal-tab" data-tab="photos">
+                    <i class="fas fa-camera"></i> Photos
+                </button>
+                <button class="modal-tab" data-tab="summary">
+                    <i class="fas fa-chart-line"></i> AI Summary
+                </button>
+                <button class="modal-tab" data-tab="settings">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Trip Planner Tab -->
+                <div class="tab-content active" id="tab-planner">
+                    <form id="tripPlannerForm">
+                        <div class="form-group">
+                            <label class="form-label">Trip Name *</label>
+                            <input type="text" class="form-input" id="tripName" placeholder="e.g., Summer in Paris"
+                                required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Start Date *</label>
+                                <input type="date" class="form-input" id="tripStartDate" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">End Date *</label>
+                                <input type="date" class="form-input" id="tripEndDate" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Destinations</label>
+                            <input type="text" class="form-input" id="tripDestinations"
+                                placeholder="e.g., Paris, Lyon, Marseille">
+                            <small style="color: var(--color-text-secondary);">Separate multiple destinations with
+                                commas</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Itinerary / Daily Plan</label>
+                            <textarea class="form-textarea" id="tripItinerary" placeholder="Day 1: Arrive in Paris, visit Eiffel Tower
+Day 2: Louvre Museum, Seine River cruise
+Day 3: Versailles day trip"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Notes & Reminders</label>
+                            <textarea class="form-textarea" id="tripNotes"
+                                placeholder="Important notes, reminders, things to pack, etc."></textarea>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Expenses Tab -->
+                <div class="tab-content" id="tab-expenses">
+                    <div class="form-group">
+                        <label class="form-label">Set Budget (Optional)</label>
+                        <input type="number" class="form-input" id="tripBudget" placeholder="Total trip budget" min="0"
+                            step="0.01">
+                    </div>
+
+                    <h3 style="margin: var(--spacing-lg) 0 var(--spacing-md);">Add Expense</h3>
+                    <form id="expenseForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <input type="text" class="form-input" id="expenseDescription"
+                                    placeholder="e.g., Hotel night 1">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Amount</label>
+                                <input type="number" class="form-input" id="expenseAmount" placeholder="0.00" min="0"
+                                    step="0.01">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <select class="form-select" id="expenseCategory">
+                                    <option value="accommodation">🏨 Accommodation</option>
+                                    <option value="food">🍴 Food & Dining</option>
+                                    <option value="transport">🚗 Transportation</option>
+                                    <option value="activities">🎭 Activities</option>
+                                    <option value="shopping">🛍️ Shopping</option>
+                                    <option value="other">📌 Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="display: flex; align-items: flex-end;">
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                    <i class="fas fa-plus"></i> Add Expense
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Expense List -->
+                    <div id="expenseListContainer" style="margin-top: var(--spacing-lg);">
+                        <h3 style="margin-bottom: var(--spacing-md);">Expenses</h3>
+                        <ul class="expense-list" id="expenseList"></ul>
+                        <div id="expenseTotalDisplay"
+                            style="text-align: right; font-size: 1.2rem; font-weight: 700; color: var(--color-primary); margin-top: var(--spacing-md);">
+                        </div>
+                    </div>
+
+                    <!-- Expense Chart -->
+                    <div class="expense-chart" id="expenseChart" style="display: none;">
+                        <h3 style="margin-bottom: var(--spacing-md);">Spending by Category</h3>
+                        <div id="chartContainer"></div>
+                    </div>
+                </div>
+
+                <!-- Photos Tab -->
+                <div class="tab-content" id="tab-photos">
+                    <div class="photo-upload-area" id="photoUploadArea">
+                        <i class="fas fa-cloud-upload-alt"
+                            style="font-size: 3rem; color: var(--color-primary); margin-bottom: var(--spacing-md);"></i>
+                        <h3>Upload Photos</h3>
+                        <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">Drag and drop
+                            images here or click to browse</p>
+                        <input type="file" id="photoInput" accept="image/*" multiple style="display: none;">
+                        <button type="button" class="btn btn-primary" id="browsePhotosBtn">
+                            <i class="fas fa-folder-open"></i> Browse Files
+                        </button>
+                    </div>
+
+                    <!-- Photo Gallery -->
+                    <div class="photo-gallery" id="photoGallery"></div>
+                </div>
+
+                <!-- AI Summary Tab -->
+                <div class="tab-content" id="tab-summary">
+                    <div style="text-align: center; padding: var(--spacing-lg);">
+                        <i class="fas fa-robot"
+                            style="font-size: 4rem; color: var(--color-primary); margin-bottom: var(--spacing-md);"></i>
+                        <h3>AI Trip Summary</h3>
+                        <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-lg);">
+                            Generate an intelligent summary of your trip with insights, statistics, and highlights
+                        </p>
+                        <button type="button" class="btn btn-primary btn-lg" id="generateSummaryBtn">
+                            <i class="fas fa-magic"></i> Generate Summary
+                        </button>
+                    </div>
+
+                    <div class="summary-output" id="summaryOutput" style="display: none;">
+                        <h3>Trip Summary</h3>
+                        <div id="summaryContent"></div>
+
+                        <div class="summary-stats" id="summaryStats"></div>
+
+                        <div style="margin-top: var(--spacing-lg); display: flex; gap: var(--spacing-sm);">
+                            <button type="button" class="btn btn-secondary" id="copySummaryBtn">
+                                <i class="fas fa-copy"></i> Copy to Clipboard
+                            </button>
+                            <button type="button" class="btn btn-success" id="exportPdfBtn">
+                                <i class="fas fa-file-pdf"></i> Export to PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="tab-content" id="tab-settings">
+                    <h3 style="margin-bottom: var(--spacing-lg);">Trip Settings</h3>
+
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: var(--spacing-sm); cursor: pointer;">
+                            <input type="checkbox" id="offlineMode" style="width: auto;">
+                            <span><strong>Enable Offline Mode</strong></span>
+                        </label>
+                        <small
+                            style="color: var(--color-text-secondary); margin-left: 28px; display: block; margin-top: 4px;">
+                            Save trip data locally for offline access and editing
+                        </small>
+                    </div>
+
+                    <div class="form-group" style="margin-top: var(--spacing-lg);">
+                        <label class="form-label">Sharing Options</label>
+                        <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                            <label style="display: flex; align-items: center; gap: var(--spacing-sm); cursor: pointer;">
+                                <input type="radio" name="shareOption" value="private" checked style="width: auto;">
+                                <span>Private (Only you can see)</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: var(--spacing-sm); cursor: pointer;">
+                                <input type="radio" name="shareOption" value="link" style="width: auto;">
+                                <span>Anyone with link can view</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: var(--spacing-sm); cursor: pointer;">
+                                <input type="radio" name="shareOption" value="public" style="width: auto;">
+                                <span>Public (Visible to everyone)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: var(--spacing-lg);">
+                        <label class="form-label">Cover Photo</label>
+                        <input type="file" class="form-input" id="coverPhotoInput" accept="image/*">
+                        <small style="color: var(--color-text-secondary); display: block; margin-top: 4px;">
+                            This will be displayed as the main image in your trip feed
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelTripBtn">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveTripBtn">
+                    <i class="fas fa-save"></i> Save Trip
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize particles when page loads
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', createParticles);
+        } else {
+            createParticles();
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="utils.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
